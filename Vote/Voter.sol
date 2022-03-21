@@ -38,7 +38,8 @@ contract Voting is Ownable {
     WorkflowStatus public currentStatus = WorkflowStatus.RegisteringVoters;
     Proposal[] public proposals;
 
-    //onstructor () {      
+    //old admin restricted modifier, commented in favor of Ownable OpenZeppelin lib
+    //constructor () {      
         //_admin = msg.sender;      
     //}
     //modifier onlyAdmin() {
@@ -47,7 +48,7 @@ contract Voting is Ownable {
     //} 
 
     modifier onlyWhitelisted() {
-        require(isWhitelisted(msg.sender));
+        require(isWhitelisted(msg.sender), "User not whitelisted");
         _;
     }
 
@@ -110,7 +111,7 @@ contract Voting is Ownable {
             }
         }
     }
-
+    //Not sure if needed as `winningProposalId` is public
     function getWinner() public view withStatus(WorkflowStatus.VotesTallied) returns (uint) {
         return winningProposalId;
     }
